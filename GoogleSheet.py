@@ -10,6 +10,7 @@ import os
 import io
 from googleapiclient.http import MediaIoBaseDownload
 
+
 class GoogleSheet:
     def __init__(self):
         auth.authenticate_user()
@@ -42,7 +43,7 @@ class GoogleSheet:
 
         # Buscar todos los archivos dentro de la carpeta especificada
         query = f"'{folder_id}' in parents and mimeType = 'application/{specific_type}' and trashed = false" if specific_type else f"'{folder_id}' in parents and trashed = false"
-        results = drive_service.files().list(q=query, fields="files(id, name, mimeType)").execute()
+        results = self.drive_service.files().list(q=query, fields="files(id, name, mimeType)").execute()
         files_to_download = results.get('files', [])
 
         if not files_to_download:
@@ -57,7 +58,7 @@ class GoogleSheet:
                 #print(f'Descargando: {file_name} ({file_id}), tipo: {mime_type}')
 
                 try:
-                    request = drive_service.files().get_media(fileId=file_id)
+                    request = self.drive_service.files().get_media(fileId=file_id)
                     fh = io.FileIO(file_path, 'wb')
                     downloader = MediaIoBaseDownload(fh, request)
                     done = False
