@@ -33,9 +33,9 @@ class GoogleSheet:
         '''
         Descarga todos los documentos que hayan en el folder_id indicado, o si se especifica un tipo en specific_type, solo los de ese tipo.
 
-        ejemplo: download_files('1MGy5SHAsnWHyzv-DVMkEZRwE8VRl2nNe','descargas_pdfs','pdf')
+        ejemplo: download_files('xyz','descargas_pdfs','pdf')
 
-        esto descarga unicamente los pdfs de la carpeta 1MGy5SHAsnWHyzv-DVMkEZRwE8VRl2nNe en el directorio /content/descargas_pdfs
+        esto descarga unicamente los pdfs de la carpeta xyz en el directorio /content/descargas_pdfs
         '''
         download_path = '/content/'+download_path
 
