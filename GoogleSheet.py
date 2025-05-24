@@ -85,7 +85,7 @@ class GoogleSheet:
         return get_as_dataframe(self.ws)
     def get_sheet_names(self):
         return list(map(lambda x: x.title,self.spreadsheet.worksheets()))
-    def save_data(self,df,sheet_name,rows="5000", cols="20"):
+    def save_data(self,df,sheet_name,rows="5000", cols="20",start_cell=None):
         try:
             self.spreadsheet.add_worksheet(title=sheet_name, rows=rows,cols=cols)
 
@@ -93,4 +93,10 @@ class GoogleSheet:
             pass
         finally:
             new_ws=self.spreadsheet.worksheet(sheet_name)
-            set_with_dataframe(new_ws,df)
+            if start_cell:
+                cell=new_ws .acell(start_cell)
+                row=cell.row
+                col=cell.col
+                set_with_dataframe(new_ws,df,)
+            else:
+                set_with_dataframe(new_ws,df,row=row,col=col)
