@@ -97,6 +97,6 @@ class GoogleSheet:
                 cell=new_ws .acell(start_cell)
                 row=cell.row
                 col=cell.col
-                set_with_dataframe(new_ws,df,)
+                set_with_dataframe(new_ws,df,row=row,col=col,include_column_header=False)
             else:
-                set_with_dataframe(new_ws,df,row=row,col=col)
+                set_with_dataframe(new_ws,df)
