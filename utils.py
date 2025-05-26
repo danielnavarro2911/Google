@@ -4,7 +4,7 @@ def convertir_xlsx_a_google(ruta_origen,id_destino):
     Convierte archivos xlsx a hojas de google.
     '''
 
-    !pip install -U -q google-api-python-client google-auth google-auth-httplib2 google-auth-oauthlib > /DEV/NULL
+    
 
     # Autenticación
     from google.colab import auth
