@@ -9,6 +9,11 @@ from googleapiclient.discovery import build
 import os
 import io
 from googleapiclient.http import MediaIoBaseDownload
+import numpy as np
+import string
+from openpyxl import load_workbook
+import openpyxl
+
 
 
 class GoogleSheet:
@@ -100,3 +105,43 @@ class GoogleSheet:
                 set_with_dataframe(new_ws,df,row=row,col=col,include_column_header=False)
             else:
                 set_with_dataframe(new_ws,df)
+    def get_data_from_excel(self,excel,sheet,drop_hidden_rows=True,drop_hidden_columns=True):
+        
+
+        workbook = openpyxl.load_workbook(excel)
+        worksheet = workbook[sheet]
+
+        # Identificar filas ocultas
+        hidden_rows_idx = []
+        if drop_hidden_rows:
+            
+            for row_idx, row_dim in worksheet.row_dimensions.items():
+                if row_dim.hidden:
+                    hidden_rows_idx.append(row_idx-1)  # openpyxl es 1-based, pandas es 0-based
+        hidden_cols_idx = []
+        if drop_hidden_columns:
+            
+            for col_letter, col_dim in worksheet.column_dimensions.items():
+                if col_dim.hidden:
+                    try:
+                        col_idx = string.ascii_uppercase.index(col_letter.upper())
+                        hidden_cols_idx.append(col_idx)
+                    except:pass
+
+
+
+        df = pd.read_excel(excel,sheet_name=sheet)
+
+
+        
+        df=df.iloc[:, ~np.isin(range(df.shape[1]), hidden_cols_idx)]
+
+        for i in hidden_rows_idx:
+            try:
+                df=df.drop(i)
+            except:
+                pass
+
+        df=df.reset_index(drop=True)
+
+        return df
